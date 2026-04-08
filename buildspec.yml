@@ -14,10 +14,10 @@ phases:
       - docker tag my-app:latest $REPO_URI:latest
 
   post_build:
-    commands:
-      - echo Pushing image...
-      - docker push $REPO_URI:latest
-      - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
+  commands:
+    - docker tag my-app $REPO_URI:latest
+    - docker push $REPO_URI:latest
+    - printf '[{"name":"hello-container","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
 
 artifacts:
   files:
