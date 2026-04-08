@@ -4,19 +4,20 @@ phases:
   pre_build:
     commands:
       - echo Logging into ECR...
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin <YOUR_ECR_URI>
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 585008053787.dkr.ecr.ap-south-1.amazonaws.com
+      - REPO_URI=585008053787.dkr.ecr.ap-south-1.amazonaws.com/codepipeline-app
 
   build:
     commands:
       - echo Building Docker image...
       - docker build -t my-app .
-      - docker tag my-app:latest <YOUR_ECR_URI>:latest
+      - docker tag my-app:latest $REPO_URI:latest
 
   post_build:
     commands:
       - echo Pushing image...
-      - docker push <YOUR_ECR_URI>:latest
-      - printf '[{"name":"hello-world","imageUri":"%s"}]' <YOUR_ECR_URI>:latest > imagedefinitions.json
+      - docker push $REPO_URI:latest
+      - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
 
 artifacts:
   files:
